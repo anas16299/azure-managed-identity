@@ -1,11 +1,11 @@
 <?php
 
-namespace CleverSo\AzureManagedIdentity\Console\Commands;
+namespace MI\AzureManagedIdentity\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use CleverSo\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
+use MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
 
 class TestAzureConnection extends Command
 {

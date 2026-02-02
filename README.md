@@ -1,4 +1,4 @@
-# CleverSo Azure Managed Identity for Laravel
+# MI Azure Managed Identity for Laravel
 
 This package enables **Azure Managed Identity (MI)** authentication for:
 
@@ -59,7 +59,7 @@ All services follow the same MI pattern:
 ## Token Service
 
 ### Class
-`CleverSo\AzureManagedIdentity\Services\AzureManagedIdentityTokenService`
+`MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService`
 
 ### Responsibilities
 - Read resource configuration from: `config('azure-managed-identity.resources.<key>')`
@@ -153,13 +153,13 @@ DB_SSLMODE=require
 
 ### Classes involved
 - Service Provider:
-    - `CleverSo\AzureManagedIdentity\Providers\AzureServiceProvider`
+    - `MI\AzureManagedIdentity\Providers\AzureServiceProvider`
 - Disk adapter:
-    - `CleverSo\AzureManagedIdentity\Filesystem\AzureAdapter`
+    - `MI\AzureManagedIdentity\Filesystem\AzureAdapter`
 - Blob client wrapper:
-    - `CleverSo\AzureManagedIdentity\Services\ManagedIdentityBlobRestProxy`
+    - `MI\AzureManagedIdentity\Services\ManagedIdentityBlobRestProxy`
 - Token fetcher:
-    - `CleverSo\AzureManagedIdentity\Services\AzureManagedIdentityTokenService`
+    - `MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService`
 
 ### What happens when you call `Storage::disk('azure')`?
 
@@ -229,11 +229,11 @@ What it does:
 
 ### Classes involved
 - Redis connector:
-    - `CleverSo\AzureManagedIdentity\Redis\AzureManagedIdentityPhpRedisConnector`
+    - `MI\AzureManagedIdentity\Redis\AzureManagedIdentityPhpRedisConnector`
 - Token fetcher:
-    - `CleverSo\AzureManagedIdentity\Services\AzureManagedIdentityTokenService`
+    - `MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService`
 - Service Provider registration:
-    - `CleverSo\AzureManagedIdentity\Providers\AzureServiceProvider`
+    - `MI\AzureManagedIdentity\Providers\AzureServiceProvider`
 
 ### What happens when you call `Redis::connection('default')`?
 
@@ -306,11 +306,11 @@ What it does:
 
 ### Classes involved
 - Postgres connector:
-    - `CleverSo\AzureManagedIdentity\Database\AzureManagedIdentityPostgresConnector`
+    - `MI\AzureManagedIdentity\Database\AzureManagedIdentityPostgresConnector`
 - Token fetcher:
-    - `CleverSo\AzureManagedIdentity\Services\AzureManagedIdentityTokenService`
+    - `MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService`
 - Service Provider binding:
-    - `CleverSo\AzureManagedIdentity\Providers\AzureServiceProvider`
+    - `MI\AzureManagedIdentity\Providers\AzureServiceProvider`
 
 ### What happens when Laravel connects to `pgsql`?
 

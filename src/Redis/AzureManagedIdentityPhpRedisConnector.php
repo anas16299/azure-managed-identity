@@ -1,10 +1,10 @@
 <?php
 
-namespace CleverSo\AzureManagedIdentity\Redis;
+namespace MI\AzureManagedIdentity\Redis;
 
 use Illuminate\Redis\Connectors\PhpRedisConnector;
 use Illuminate\Support\Facades\Log;
-use CleverSo\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
+use MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
 
 class AzureManagedIdentityPhpRedisConnector extends PhpRedisConnector
 {

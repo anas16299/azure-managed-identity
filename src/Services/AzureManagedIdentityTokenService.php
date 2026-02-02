@@ -1,6 +1,6 @@
 <?php
 
-namespace CleverSo\AzureManagedIdentity\Services;
+namespace MI\AzureManagedIdentity\Services;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;

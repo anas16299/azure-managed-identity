@@ -1,10 +1,10 @@
 <?php
 
-namespace CleverSo\AzureManagedIdentity\Database;
+namespace MI\AzureManagedIdentity\Database;
 
 use Illuminate\Database\Connectors\PostgresConnector;
 use Illuminate\Support\Facades\Log;
-use CleverSo\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
+use MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
 use PDO;
 
 class AzureManagedIdentityPostgresConnector extends PostgresConnector

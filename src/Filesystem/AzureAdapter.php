@@ -1,6 +1,6 @@
 <?php
 
-namespace CleverSo\AzureManagedIdentity\Filesystem;
+namespace MI\AzureManagedIdentity\Filesystem;
 
 use Illuminate\Filesystem\FilesystemAdapter;
 

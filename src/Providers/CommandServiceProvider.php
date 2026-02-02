@@ -1,10 +1,10 @@
 <?php
 
-namespace CleverSo\AzureManagedIdentity\Providers;
+namespace MI\AzureManagedIdentity\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use CleverSo\AzureManagedIdentity\Console\Commands\TestAzureConnection;
-use CleverSo\AzureManagedIdentity\Console\Commands\TestAzureRedisConnection;
+use MI\AzureManagedIdentity\Console\Commands\TestAzureConnection;
+use MI\AzureManagedIdentity\Console\Commands\TestAzureRedisConnection;
 
 class CommandServiceProvider extends ServiceProvider
 {

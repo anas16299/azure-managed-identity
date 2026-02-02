@@ -1,6 +1,6 @@
 <?php
 
-namespace CleverSo\AzureManagedIdentity\Services;
+namespace MI\AzureManagedIdentity\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Middleware;

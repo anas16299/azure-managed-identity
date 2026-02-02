@@ -1,20 +1,20 @@
 <?php
 
-namespace CleverSo\AzureManagedIdentity\Providers;
+namespace MI\AzureManagedIdentity\Providers;
 
 use League\Flysystem\Filesystem;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-use CleverSo\AzureManagedIdentity\Filesystem\AzureAdapter;
+use MI\AzureManagedIdentity\Filesystem\AzureAdapter;
 use League\Flysystem\AzureBlobStorage\AzureBlobStorageAdapter;
-use CleverSo\AzureManagedIdentity\Services\ManagedIdentityBlobRestProxy;
-use CleverSo\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
+use MI\AzureManagedIdentity\Services\ManagedIdentityBlobRestProxy;
+use MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
 use Illuminate\Support\Facades\Redis;
-use CleverSo\AzureManagedIdentity\Redis\AzureManagedIdentityPhpRedisConnector;
+use MI\AzureManagedIdentity\Redis\AzureManagedIdentityPhpRedisConnector;
 use Illuminate\Support\Facades\DB;
-use CleverSo\AzureManagedIdentity\Database\AzureManagedIdentityPostgresConnector;
+use MI\AzureManagedIdentity\Database\AzureManagedIdentityPostgresConnector;
 
 class AzureServiceProvider extends ServiceProvider
 {
