@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^10.0|^11.0",
+        "laravel/framework": "^8.75",
         "guzzlehttp/guzzle": "^7.0",
         "microsoft/azure-storage-blob": "^1.0",
         "league/flysystem-azure-blob-storage": "^3.0"
