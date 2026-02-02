@@ -1,0 +1,41 @@
+{
+    "name": "cleverso/azure-managed-identity",
+    "description": "Azure Managed Identity authentication for Laravel Azure Blob Storage with automatic token caching and refresh",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anas Almasri",
+            "email": "anas.almasri@tarjama.com"
+        }
+    ],
+    "keywords": [
+        "azure",
+        "managed-identity",
+        "laravel",
+        "blob-storage",
+        "authentication"
+    ],
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^10.0|^11.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "microsoft/azure-storage-blob": "^1.0",
+        "league/flysystem-azure-blob-storage": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CleverSo\\AzureManagedIdentity\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CleverSo\\AzureManagedIdentity\\Providers\\AzureServiceProvider",
+                "CleverSo\\AzureManagedIdentity\\Providers\\CommandServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
