@@ -1,5 +1,5 @@
 {
-    "name": "MI/azure-managed-identity",
+    "name": "mi/azure-managed-identity",
     "description": "Azure Managed Identity authentication for Laravel Azure Blob Storage with automatic token caching and refresh",
     "type": "library",
     "license": "MIT",
