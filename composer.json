@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^8.75",
+        "laravel/framework": "^8.75|^10.0|^11.0",
         "guzzlehttp/guzzle": "^7.0"
     },
     "autoload": {
