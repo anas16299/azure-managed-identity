@@ -191,20 +191,20 @@ Your implementation injects a Bearer-token aware HTTP client so requests are aut
 
 ```mermaid
 flowchart TD
-  A[Storage::disk('azure')] --> B[Storage driver 'azure' registered]
-  B --> C{use_managed_identity?}
-  C -- No --> D[Create Blob client using account key]
-  C -- Yes --> E[TokenService.getAccessToken(clientId, 'storage')]
-  E --> F{Token cached?}
-  F -- Yes --> G[Use cached token]
-  F -- No --> H[Call IMDS token endpoint]
-  H --> I[Receive access_token + expires_in]
-  I --> J[Cache token in file store]
+  A["Storage::disk('azure')"] --> B["Storage driver 'azure' registered"]
+  B --> C{"use_managed_identity?"}
+  C -- "No" --> D["Create Blob client using account key"]
+  C -- "Yes" --> E["TokenService.getAccessToken(clientId, 'storage')"]
+  E --> F{"Token cached?"}
+  F -- "Yes" --> G["Use cached token"]
+  F -- "No" --> H["Call IMDS token endpoint"]
+  H --> I["Receive access_token + expires_in"]
+  I --> J["Cache token in file store"]
   J --> G
-  G --> K[Create Blob client]
-  K --> L[Inject Authorization: Bearer token]
-  L --> M[Flysystem Azure adapter]
-  M --> N[Storage operations succeed]
+  G --> K["Create Blob client"]
+  K --> L["Inject Authorization header (Bearer token)"]
+  L --> M["Flysystem Azure adapter"]
+  M --> N["Storage operations succeed"]
 ```
 
 ---
@@ -265,21 +265,21 @@ When MI is enabled, the Redis connection config must provide:
 
 ```mermaid
 flowchart TD
-  A[Redis::connection(name)] --> B[REDIS_CLIENT=azure-mi]
-  B --> C[AzureManagedIdentityPhpRedisConnector.connect]
-  C --> D{use_managed_identity?}
-  D -- No --> E[Use normal password flow]
-  D -- Yes --> F[Require username present]
-  F --> G[TokenService.getAccessToken(clientId, 'redis')]
-  G --> H{Token cached?}
-  H -- Yes --> I[Use cached token]
-  H -- No --> J[Call IMDS token endpoint]
-  J --> K[Receive access_token + expires_in]
-  K --> L[Cache token in file store]
+  A["Redis::connection(name)"] --> B["REDIS_CLIENT=azure-mi"]
+  B --> C["AzureManagedIdentityPhpRedisConnector.connect"]
+  C --> D{"use_managed_identity?"}
+  D -- "No" --> E["Use normal password flow"]
+  D -- "Yes" --> F["Require username present"]
+  F --> G["TokenService.getAccessToken(clientId, 'redis')"]
+  G --> H{"Token cached?"}
+  H -- "Yes" --> I["Use cached token"]
+  H -- "No" --> J["Call IMDS token endpoint"]
+  J --> K["Receive access_token + expires_in"]
+  K --> L["Cache token in file store"]
   L --> I
-  I --> M[Set config.username and config.password=token]
-  M --> N[Connect via PhpRedis (TLS)]
-  N --> O[Redis ready for commands]
+  I --> M["Set config.username and config.password=token"]
+  M --> N["Connect via PhpRedis (TLS)"]
+  N --> O["Redis ready for commands"]
 ```
 
 ---
@@ -344,24 +344,25 @@ For Azure Database for PostgreSQL with Entra/AAD auth, the **access token** acts
 
 ```mermaid
 flowchart TD
-  A[Laravel DB connection pgsql] --> B[db.connector.pgsql overridden]
-  B --> C[AzureManagedIdentityPostgresConnector.connect]
-  C --> D{use_managed_identity?}
-  D -- No --> E[Use DB_PASSWORD from env]
-  D -- Yes --> F[TokenService.getAccessToken(clientId, 'db')]
-  F --> G{Token cached?}
-  G -- Yes --> H[Use cached token]
-  G -- No --> I[Call IMDS token endpoint]
-  I --> J[Receive access_token + expires_in]
-  J --> K[Cache token in file store]
+  A["Laravel DB connection pgsql"] --> B["db.connector.pgsql overridden"]
+  B --> C["AzureManagedIdentityPostgresConnector.connect"]
+  C --> D{"use_managed_identity?"}
+  D -- "No" --> E["Use DB_PASSWORD from env"]
+  D -- "Yes" --> F["TokenService.getAccessToken(clientId, 'db')"]
+  F --> G{"Token cached?"}
+  G -- "Yes" --> H["Use cached token"]
+  G -- "No" --> I["Call IMDS token endpoint"]
+  I --> J["Receive access_token + expires_in"]
+  J --> K["Cache token in file store"]
   K --> H
-  H --> L[Set config.password=token]
-  L --> M{sslmode empty?}
-  M -- Yes --> N[Set sslmode=require]
-  M -- No --> O[Keep existing sslmode]
-  N --> P[Create PDO connection]
+  H --> L["Set config.password=token"]
+  L --> M{"sslmode empty?"}
+  M -- "Yes" --> N["Set sslmode=require"]
+  M -- "No" --> O["Keep existing sslmode"]
+  N --> P["Create PDO connection"]
   O --> P
-  P --> Q[DB ready for queries]
+  P --> Q["DB ready for queries"]
+
 ```
 
 ---
