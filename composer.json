@@ -19,9 +19,7 @@
     "require": {
         "php": "^7.4",
         "laravel/framework": "^8.75",
-        "guzzlehttp/guzzle": "^7.0",
-        "microsoft/azure-storage-blob": "^1.0",
-        "league/flysystem-azure-blob-storage": "^3.0"
+        "guzzlehttp/guzzle": "^7.0"
     },
     "autoload": {
         "psr-4": {
