@@ -23,9 +23,15 @@ class AzureServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(
-            __DIR__.'/../Config/azure-managed-identity.php', 'azure-managed-identity'
-        );
+        $configPath = __DIR__ . '/../config/azure-managed-identity.php';
+
+        if (!file_exists($configPath)) {
+            $configPath = __DIR__ . '/../Config/azure-managed-identity.php';
+        }
+
+        if (file_exists($configPath)) {
+            $this->mergeConfigFrom($configPath, 'azure-managed-identity');
+        }
 
         // Register the token service as singleton
         $this->app->singleton(AzureManagedIdentityTokenService::class, function ($app) {
@@ -47,15 +53,31 @@ class AzureServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Publish configuration
-        $this->publishes([
-            __DIR__.'/../config/azure-managed-identity.php' => config_path('azure-managed-identity.php'),
-        ], 'azure-managed-identity-config');
+        if (
+            method_exists($this, 'publishes') &&
+            function_exists('config_path') &&
+            function_exists('base_path')
+        ) {
+            $publishConfigPath = __DIR__ . '/../config/azure-managed-identity.php';
+            if (!file_exists($publishConfigPath)) {
+                $publishConfigPath = __DIR__ . '/../Config/azure-managed-identity.php';
+            }
 
-        // Publish .env.example
-        $this->publishes([
-            __DIR__.'/../.env.example' => base_path('.env.azure.example'),
-        ], 'azure-managed-identity-env');
+            if (file_exists($publishConfigPath)) {
+                $this->publishes([
+                    $publishConfigPath => config_path('azure-managed-identity.php'),
+                ], 'azure-managed-identity-config');
+            }
+
+            $envExamplePath = __DIR__ . '/../.env.example';
+            if (file_exists($envExamplePath)) {
+                $this->publishes([
+                    $envExamplePath => base_path('.env.azure.example'),
+                ], 'azure-managed-identity-env');
+            }
+        }
+
+
 
         // Register Azure storage driver
         Storage::extend('azure', function ($app, $config) {
