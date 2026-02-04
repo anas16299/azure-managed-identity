@@ -17,8 +17,12 @@
         "authentication"
     ],
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^8.75|^10.0|^11.0",
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0|^10.0|^11.0",
+        "illuminate/filesystem": "^8.0|^10.0|^11.0",
+        "illuminate/redis": "^8.0|^10.0|^11.0",
+        "illuminate/database": "^8.0|^10.0|^11.0",
+        "illuminate/console": "^8.0|^10.0|^11.0",
         "guzzlehttp/guzzle": "^7.0",
         "microsoft/azure-storage-blob": "^1.0",
         "league/flysystem-azure-blob-storage": "^3.0"
