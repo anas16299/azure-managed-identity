@@ -14,86 +14,41 @@ class AzureManagedIdentityPhpRedisConnector extends PhpRedisConnector
 
     public function connect(array $config, array $options)
     {
-        \Log::info('Azure Redis: Starting connection', [
+        Log::info('Azure Redis: Starting connection', [
             'host' => $config['host'] ?? null,
             'port' => $config['port'] ?? null,
-            'tls'  => (($config['scheme'] ?? null) === 'tls'),
+            'tls' => ($config['scheme'] ?? null) === 'tls',
             'use_managed_identity' => (bool) ($config['use_managed_identity'] ?? false),
-            'has_url' => array_key_exists('url', $config),
-            'url_value' => $config['url'] ?? null,
         ]);
 
-        // avoid url side-effects
-        if (array_key_exists('url', $config) && empty($config['url'])) {
-            unset($config['url']);
-        }
-
-        $host = (string) ($config['host'] ?? '127.0.0.1');
-        $port = (int) ($config['port'] ?? 6379);
-
-        $timeout = (float) ($config['timeout'] ?? 10);
-        $readTimeout = (float) ($config['read_timeout'] ?? 10);
-
-        $isTls = (($config['scheme'] ?? null) === 'tls');
-        $redisHost = $isTls ? "tls://{$host}" : $host;
-
-        // Managed Identity token
         if (!empty($config['use_managed_identity']) && filter_var($config['use_managed_identity'], FILTER_VALIDATE_BOOLEAN)) {
-            $username = $config['username'] ?? null;
             $clientId = $config['client_id'] ?? null;
 
+            $username = $config['username'] ?? $config['user'] ?? null;
             if (!$username) {
-                \Log::error('Azure Redis: Missing username for AAD auth');
-                throw new \InvalidArgumentException('Azure Redis Managed Identity requires AZURE_REDIS_USERNAME.');
+                Log::error('Azure Redis: Missing username for AAD auth');
+                throw new \InvalidArgumentException('Azure Redis Managed Identity requires a username (AAD principal/object id).');
             }
+
+            Log::info('Azure Redis: Fetching access token for redis resource', [
+                'has_client_id' => (bool) $clientId,
+            ]);
 
             $token = $this->tokenService->getAccessToken($clientId, 'redis');
 
-            $config['password'] = (string) $token;
-            $config['username'] = (string) $username;
+            $config['password'] = $token;
+            $config['username'] = $username;
 
-            \Log::info('Azure Redis: Token fetched for MI', [
-                'username' => $config['username'],
-                'token_length' => strlen($config['password']),
+            Log::info('Azure Redis: Token assigned to connection config', [
+                'username' => $username,
+                'token_length' => strlen($token),
             ]);
         }
 
-        $password = $config['password'] ?? null;
-        $username = $config['username'] ?? null;
+        $client = parent::connect($config, $options);
 
-        $client = new \Redis();
-        $context = $config['context'] ?? null;
+        Log::info('Azure Redis: Connection created successfully');
 
-        // connect
-        $client->connect($redisHost, $port, $timeout, null, 0, $readTimeout, $context);
-
-        // IMPORTANT: ACL auth username + token
-        if (!empty($password)) {
-            if (!empty($username)) {
-                $client->auth([(string) $username, (string) $password]);
-            } else {
-                $client->auth((string) $password);
-            }
-        }
-
-        // select DB AFTER auth
-        if (isset($config['database'])) {
-            $client->select((int) $config['database']);
-        }
-
-        // prefix support
-        $prefix = $config['options']['prefix'] ?? ($config['prefix'] ?? null);
-        if (!empty($prefix)) {
-            $client->setOption(\Redis::OPT_PREFIX, (string) $prefix);
-        }
-
-        \Log::info('Azure Redis: Connection created successfully');
-
-        //  Return Laravel Connection wrapper (NOT raw Redis)
-        return new \Illuminate\Redis\Connections\PhpRedisConnection(
-            $client,
-            null,
-            $config
-        );
+        return $client;
     }
 }
