@@ -128,11 +128,18 @@ class AzureServiceProvider extends ServiceProvider
             );
         });
 
-        Redis::extend('azure-mi', function () {
-            Log::info('Azure Redis: Registering azure-mi Redis connector');
-            return new AzureManagedIdentityPhpRedisConnector(
-                app(AzureManagedIdentityTokenService::class)
-            );
+//        Redis::extend('azure-mi', function () {
+//            Log::info('Azure Redis: Registering azure-mi Redis connector');
+//            return new AzureManagedIdentityPhpRedisConnector(
+//                app(AzureManagedIdentityTokenService::class)
+//            );
+//        });
+        $this->app->afterResolving('redis', function ($redisManager) {
+            $redisManager->extend('azure-mi', function () {
+                return new \MI\AzureManagedIdentity\Redis\AzureManagedIdentityPhpRedisConnector(
+                    app(\MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService::class)
+                );
+            });
         });
 
 
