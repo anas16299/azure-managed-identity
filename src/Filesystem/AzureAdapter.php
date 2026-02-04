@@ -10,7 +10,7 @@ class AzureAdapter extends FilesystemAdapter
 
     public function __construct($driver, $adapter, array $config)
     {
-        parent::__construct($driver, $adapter);
+        parent::__construct($driver, $adapter, $config);
         $this->customConfig = $config;
     }
 
