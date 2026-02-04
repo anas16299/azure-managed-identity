@@ -9,9 +9,13 @@ use PDO;
 
 class AzureManagedIdentityPostgresConnector extends PostgresConnector
 {
-    public function __construct(
-        private readonly AzureManagedIdentityTokenService $tokenService
-    ) {}
+    private AzureManagedIdentityTokenService $tokenService;
+
+    public function __construct(AzureManagedIdentityTokenService $tokenService)
+    {
+        $this->tokenService = $tokenService;
+    }
+
 
     public function connect(array $config): PDO
     {

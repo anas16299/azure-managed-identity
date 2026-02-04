@@ -8,9 +8,13 @@ use MI\AzureManagedIdentity\Services\AzureManagedIdentityTokenService;
 
 class AzureManagedIdentityPhpRedisConnector extends PhpRedisConnector
 {
-    public function __construct(private readonly AzureManagedIdentityTokenService $tokenService)
+    private AzureManagedIdentityTokenService $tokenService;
+
+    public function __construct(AzureManagedIdentityTokenService $tokenService)
     {
+        $this->tokenService = $tokenService;
     }
+
 
     public function connect(array $config, array $options)
     {
