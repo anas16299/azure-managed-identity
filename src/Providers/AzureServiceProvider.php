@@ -81,6 +81,8 @@ class AzureServiceProvider extends ServiceProvider
 
         // Register Azure storage driver
         Storage::extend('azure', function ($app, $config) {
+            $container = $config['container'];
+
             $useManagedIdentity = !empty($config['use_managed_identity'])
                 && filter_var($config['use_managed_identity'], FILTER_VALIDATE_BOOLEAN);
 
@@ -91,7 +93,22 @@ class AzureServiceProvider extends ServiceProvider
                 Log::info('Azure Storage: Using Account Key authentication');
                 $client = $this->createBlobClientWithAccountKey($config);
             }
+            if (interface_exists(\League\Flysystem\FilesystemInterface::class)) {
+                // Flysystem v1
+                $adapter = new \League\Flysystem\AzureBlobStorage\AzureBlobStorageAdapter($client, $container);
+                $flysystem = new \League\Flysystem\Filesystem($adapter);
 
+                $url = $config['url'] ?? env('AZURE_STORAGE_URL', '');
+                return new \MI\AzureManagedIdentity\Filesystem\AzureAdapter(
+                    $flysystem,   // v1 FilesystemInterface
+                    $adapter,
+                    [
+                        'url' => $url,
+                        'container' => $container,
+                        'visibility' => $config['visibility'] ?? 'public',
+                    ]
+                );
+            }
             $adapter = new AzureBlobStorageAdapter(
                 $client,
                 $config['container']
